@@ -11,10 +11,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta charset="UTF-8">
     <title>Play-gtm by MSakamaki</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -22,37 +18,58 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <body>
-      <div>
-        <main>
-          <section>
-            <div class="p-result__main">
-              <section class="p-property" data-bukken-no="11">物件 1</section>
-              <section class="p-property" data-bukken-no="12">物件 2</section>
-              <section class="p-property" data-bukken-no="13">物件 3</section>
-              <section class="p-property" data-bukken-no="14">物件 4</section>
-              <section class="p-property" data-bukken-no="15">物件 5</section>
-              <section class="p-property" data-bukken-no="16">物件 6</section>
-              <section class="p-property" data-bukken-no="17">物件 7</section>
-              <section class="p-property" data-bukken-no="18">物件 8</section>
-              <section class="p-property" data-bukken-no="19">物件 9</section>
-              <section class="p-property" data-bukken-no="110">物件 10</section>
-              <section class="p-property" data-bukken-no="111">物件 11</section>
-              <section class="p-property" data-bukken-no="112">物件 12</section>
-              <section class="p-property" data-bukken-no="113">物件 13</section>
-              <section class="p-property" data-bukken-no="114">物件 14</section>
-              <section class="p-property" data-bukken-no="115">物件 15</section>
-              <section class="p-property" data-bukken-no="116">物件 16</section>
-              <section class="p-property" data-bukken-no="117">物件 17</section>
-              <section class="p-property" data-bukken-no="118">物件 18</section>
-              <section class="p-property" data-bukken-no="119">物件 19</section>
-              <section class="p-property" data-bukken-no="120">物件 20</section>
-            </div>
-          </section>
-        </main>
-      </div>
-    </body>
+    <div>
+      <button onClick="sendPost()">AJAX送信</button>
+    </div>
+    <div>
+      <main>
+        <section>
+          <div class="p-result__main">
+            <section class="p-property" data-bukken-no="11">物件 1</section>
+            <section class="p-property" data-bukken-no="12">物件 2</section>
+            <section class="p-property" data-bukken-no="13">物件 3</section>
+            <section class="p-property" data-bukken-no="14">物件 4</section>
+            <section class="p-property" data-bukken-no="15">物件 5</section>
+            <section class="p-property" data-bukken-no="16">物件 6</section>
+            <section class="p-property" data-bukken-no="17">物件 7</section>
+            <section class="p-property" data-bukken-no="18">物件 8</section>
+            <section class="p-property" data-bukken-no="19">物件 9</section>
+            <section class="p-property" data-bukken-no="110">物件 10</section>
+            <section class="p-property" data-bukken-no="111">物件 11</section>
+            <section class="p-property" data-bukken-no="112">物件 12</section>
+            <section class="p-property" data-bukken-no="113">物件 13</section>
+            <section class="p-property" data-bukken-no="114">物件 14</section>
+            <section class="p-property" data-bukken-no="115">物件 15</section>
+            <section class="p-property" data-bukken-no="116">物件 16</section>
+            <section class="p-property" data-bukken-no="117">物件 17</section>
+            <section class="p-property" data-bukken-no="118">物件 18</section>
+            <section class="p-property" data-bukken-no="119">物件 19</section>
+            <section class="p-property" data-bukken-no="120">物件 20</section>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script>
+      function sendPost(){
+        post();
+      }
 
+function post(){
 
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+      var READYSTATE_COMPLETED = 4;
+      var HTTP_STATUS_OK = 200;
+
+      if( this.readyState == READYSTATE_COMPLETED && this.status == HTTP_STATUS_OK )
+        console.log( this.responseText )
+  }
+
+  xhr.open( 'POST', '/api/test' );
+  xhr.setRequestHeader( 'Content-Type', 'application/json' );
+  xhr.send( EncodeHTMLForm( { foo: 'abc', bar: 100 } ) );
+}
+
+    </script>
   </body>
 </html>

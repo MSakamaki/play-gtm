@@ -11,47 +11,95 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta charset="UTF-8">
     <title>Play-gtm by MSakamaki</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PPKMJPD"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <body>
-      <div>
-        <main>
-          <section>
-            <div class="p-result__main">
-              <section class="p-property" data-bukken-no="1">物件 1</section>
-              <section class="p-property" data-bukken-no="2">物件 2</section>
-              <section class="p-property" data-bukken-no="3">物件 3</section>
-              <section class="p-property" data-bukken-no="4">物件 4</section>
-              <section class="p-property" data-bukken-no="5">物件 5</section>
-              <section class="p-property" data-bukken-no="6">物件 6</section>
-              <section class="p-property" data-bukken-no="7">物件 7</section>
-              <section class="p-property" data-bukken-no="8">物件 8</section>
-              <section class="p-property" data-bukken-no="9">物件 9</section>
-              <section class="p-property" data-bukken-no="10">物件 10</section>
-              <section class="p-property" data-bukken-no="11">物件 11</section>
-              <section class="p-property" data-bukken-no="12">物件 12</section>
-              <section class="p-property" data-bukken-no="13">物件 13</section>
-              <section class="p-property" data-bukken-no="14">物件 14</section>
-              <section class="p-property" data-bukken-no="15">物件 15</section>
-              <section class="p-property" data-bukken-no="16">物件 16</section>
-              <section class="p-property" data-bukken-no="17">物件 17</section>
-              <section class="p-property" data-bukken-no="18">物件 18</section>
-              <section class="p-property" data-bukken-no="19">物件 19</section>
-              <section class="p-property" data-bukken-no="20">物件 20</section>
-            </div>
-          </section>
-        </main>
-      </div>
-    </body>
 
+    <div>
+      <button onClick="sendPost()">AJAX送信</button>
+    </div>
+    <div>
+      <main>
+        <section>
+          <div class="p-result__main">
+            <section class="p-property" data-bukken-no="1">物件 1</section>
+            <section class="p-property" data-bukken-no="2">物件 2</section>
+            <section class="p-property" data-bukken-no="3">物件 3</section>
+            <section class="p-property" data-bukken-no="4">物件 4</section>
+            <section class="p-property" data-bukken-no="5">物件 5</section>
+            <section class="p-property" data-bukken-no="6">物件 6</section>
+            <section class="p-property" data-bukken-no="7">物件 7</section>
+            <section class="p-property" data-bukken-no="8">物件 8</section>
+            <section class="p-property" data-bukken-no="9">物件 9</section>
+            <section class="p-property" data-bukken-no="10">物件 10</section>
+            <section class="p-property" data-bukken-no="11">物件 11</section>
+            <section class="p-property" data-bukken-no="12">物件 12</section>
+            <section class="p-property" data-bukken-no="13">物件 13</section>
+            <section class="p-property" data-bukken-no="14">物件 14</section>
+            <section class="p-property" data-bukken-no="15">物件 15</section>
+            <section class="p-property" data-bukken-no="16">物件 16</section>
+            <section class="p-property" data-bukken-no="17">物件 17</section>
+            <section class="p-property" data-bukken-no="18">物件 18</section>
+            <section class="p-property" data-bukken-no="19">物件 19</section>
+            <section class="p-property" data-bukken-no="20">物件 20</section>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script>
+    // ここは本来GTMで追加するが、見やすくするために生追加
+    (function() {
+      var xhrOpen = window.XMLHttpRequest.prototype.open;
+      var xhrSend = window.XMLHttpRequest.prototype.send;
+      window.XMLHttpRequest.prototype.open = function() {
+        this.method = arguments[0];
+        this.url = arguments[1];
+        return xhrOpen.apply(this, [].slice.call(arguments));
+      };
+      window.XMLHttpRequest.prototype.send = function() {
+        var xhr = this;
+        var xhrData = arguments[0];
+        var intervalId = window.setInterval(function() {
+          if(xhr.readyState != 4) {
+            return;
+          }
+          dataLayer.push({
+            'event': 'ajaxSuccess',
+            'eventCategory': 'AJAX ' + xhr.method,
+            'eventAction': xhr.url + (xhr.method == 'POST' && xhrData ? ';' + xhrData : ''),
+            'eventLabel': xhr.responseText
+          });
+          clearInterval(intervalId);
+        }, 1);
+        return xhrSend.apply(this, [].slice.call(arguments));
+      };
+    })();
+    </script>
+    <script>
+      // オンクリックイベント、クリックしたら上のXHR送信し、ajaxSuccessが発火するので「イベント発火したわー」というコンソールを出すGTMが起動する。
+      function sendPost(){
+        post();
+      }
 
+      function post(){
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            var READYSTATE_COMPLETED = 4;
+            var HTTP_STATUS_OK = 200;
+
+            if( this.readyState == READYSTATE_COMPLETED && this.status == HTTP_STATUS_OK )
+              console.log( this.responseText )
+        }
+
+        xhr.open( 'POST', '/api/test' );
+        xhr.setRequestHeader( 'Content-Type', 'application/json' );
+        xhr.send({ foo: 'abc', bar: 100 });
+      }
+
+    </script>
   </body>
 </html>
